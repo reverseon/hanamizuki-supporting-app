@@ -1,0 +1,4 @@
+# Main Rakefile - loads all tasks from tasks/ directory
+
+# Load all .rake files from the tasks directory
+Dir.glob('tasks/*.rake').each { |r| load r }

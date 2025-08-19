@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  k8s-dex-client:
+    build:
+      context: ..
+      dockerfile: docker/dev.Dockerfile
+    ports:
+      - "5555:5555"
+    volumes:
+      # Mount the entire project directory for hot reloading
+      - ..:/app
+      # Use a named volume for the Go module cache to improve performance
+      - go-mod-cache:/go/pkg/mod
+      # Exclude tmp directory from being overwritten by host
+      - /app/tmp
+    env_file:
+      - .env.secret
+    environment:
+      - PORT=5555
+      - GO_ENV=development
+      - CLIENT_ID=dex-k8s-client
+      - OIDC_ISSUER=https://dex.mizuki.otaprv.ishiori.net/dex
+      - CLIENT_CLUSTER_NAME=mizuki
+      - CALLBACK_URL=http://localhost:5555/apis/auth/callback
+      - APISERVER_URL=https://apiserver.mizuki.otaprv.ishiori.net
+    # Keep container running even if the main process exits
+    stdin_open: true
+    tty: true
+    # Restart policy for development
+    restart: unless-stopped
+
+volumes:
+  go-mod-cache:
