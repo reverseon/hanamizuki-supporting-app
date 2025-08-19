@@ -1,4 +1,4 @@
-# Build stage
+# Build stage - Updated for better health monitoring
 FROM golang:1.24-alpine AS builder
 
 # Install build dependencies
