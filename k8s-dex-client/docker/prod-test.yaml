@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  k8s-dex-client:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile  # Using Production Dockerfile
+    ports:
+      - "5555:5555"
+    env_file:
+      - .env.secret
+    environment:
+      - PORT=5555
+      - GO_ENV=production
+      - CLIENT_ID=dex-k8s-client
+      - OIDC_ISSUER=https://dex.mizuki.otaprv.ishiori.net/dex
+      - CLIENT_CLUSTER_NAME=mizuki
+      - CALLBACK_URL=http://localhost:5555/apis/auth/callback
+      - APISERVER_URL=https://apiserver.mizuki.otaprv.ishiori.net
+    # Health check enabled (from Dockerfile)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5555/static/favicon.png"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+    # Restart policy for testing
+    restart: unless-stopped
