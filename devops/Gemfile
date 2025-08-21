@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+
+# Example gems for DevOps tasks
+gem 'rake'
+gem 'colorize'
