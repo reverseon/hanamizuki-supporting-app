@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  k8s-landing-page:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile  # Using Production Dockerfile
+    ports:
+      - "2434:2434"
+    environment:
+      - PORT=2434
+      - GO_ENV=production
+      - CLUSTER_NAME=mizuki
+    # Health check enabled (from Dockerfile)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2434/"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+    # Restart policy for testing
+    restart: unless-stopped
