@@ -36,7 +36,6 @@ class QuantumInterface {
         this.initializeTimestamp();
         this.startQuantumLoop();
         this.setupGeometricMorphing();
-        this.initializeCursorTrail();
         this.isInitialized = true;
         
         console.log(`
@@ -414,73 +413,8 @@ class QuantumInterface {
     setupGeometricMorphing() {
         const shapes = document.querySelectorAll('.geo-shape');
         
-        shapes.forEach(shape => {
-            let morphTimer;
-            
-            shape.addEventListener('mouseenter', () => {
-                clearTimeout(morphTimer);
-                const targetMorph = shape.dataset.morph;
-                
-                switch (targetMorph) {
-                    case 'triangle':
-                        shape.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
-                        break;
-                    case 'square':
-                        shape.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
-                        shape.style.borderRadius = '0';
-                        break;
-                    case 'hex':
-                        shape.style.clipPath = 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)';
-                        break;
-                }
-                
-                shape.style.transform = 'scale(1.2) rotate(180deg)';
-                shape.style.borderColor = 'var(--neon-magenta)';
-            });
-            
-            shape.addEventListener('mouseleave', () => {
-                morphTimer = setTimeout(() => {
-                    shape.style.transform = '';
-                    shape.style.borderColor = '';
-                    
-                    if (shape.classList.contains('circle')) {
-                        shape.style.clipPath = '';
-                        shape.style.borderRadius = '50%';
-                    } else if (shape.classList.contains('hex')) {
-                        shape.style.clipPath = 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)';
-                    } else if (shape.classList.contains('triangle')) {
-                        shape.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
-                    }
-                }, 1000);
-            });
-        });
     }
 
-    initializeCursorTrail() {
-        const trail = document.getElementById('cursorTrail');
-        if (!trail) return;
-        
-        let mouseX = 0, mouseY = 0;
-        let trailX = 0, trailY = 0;
-        
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-        
-        const updateTrail = () => {
-            trailX += (mouseX - trailX) * 0.1;
-            trailY += (mouseY - trailY) * 0.1;
-            
-            trail.style.left = trailX - 10 + 'px';
-            trail.style.top = trailY - 10 + 'px';
-            trail.style.opacity = '0.8';
-            
-            requestAnimationFrame(updateTrail);
-        };
-        
-        updateTrail();
-    }
 
     initializeTimestamp() {
         const updateTimestamp = () => {
@@ -499,7 +433,7 @@ class QuantumInterface {
                 };
                 
                 const timeString = now.toLocaleDateString('en-US', options);
-                timestampDisplay.textContent = `Quantum Timestamp: ${timeString}`;
+                timestampDisplay.textContent = `Timestamp: ${timeString}`;
             }
         };
         
@@ -547,34 +481,6 @@ class QuantumCardSystem {
     
     init() {
         this.cards.forEach((card, index) => {
-            // Advanced hover effects with quantum entanglement
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-15px) rotateX(10deg) translateZ(50px)';
-                card.style.boxShadow = `
-                    0 30px 60px rgba(0, 212, 255, 0.2),
-                    0 0 150px rgba(0, 212, 255, 0.15),
-                    inset 0 0 80px rgba(255, 255, 255, 0.1)
-                `;
-                
-                // Quantum entanglement effect on other cards
-                this.cards.forEach((otherCard, otherIndex) => {
-                    if (otherIndex !== index) {
-                        otherCard.style.transform = 'translateY(-2px) scale(0.98)';
-                        otherCard.style.opacity = '0.7';
-                    }
-                });
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-                card.style.boxShadow = '';
-                
-                // Reset entanglement
-                this.cards.forEach((otherCard) => {
-                    otherCard.style.transform = '';
-                    otherCard.style.opacity = '';
-                });
-            });
             
             // Advanced click interactions
             card.addEventListener('click', () => {

@@ -19,7 +19,7 @@ COPY . .
 # Build the application
 # CGO_ENABLED=0 creates a static binary
 # -ldflags="-w -s" strips debug information to reduce binary size
-RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags="-w -s" -o k8s-dex-client .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags="-w -s" -o k8s-landing-page .
 
 # Production stage
 FROM alpine:latest
@@ -35,7 +35,7 @@ RUN addgroup -g 1001 -S appgroup && \
 WORKDIR /app
 
 # Copy the binary from builder stage
-COPY --from=builder /app/k8s-dex-client .
+COPY --from=builder /app/k8s-landing-page .
 
 # Copy static files and templates
 COPY --from=builder /app/static ./static
@@ -55,4 +55,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:${PORT:-5555}/static/favicon.png || exit 1
 
 # Run the binary
-CMD ["./k8s-dex-client"]
+CMD ["./k8s-landing-page"]
