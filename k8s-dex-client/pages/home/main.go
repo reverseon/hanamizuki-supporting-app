@@ -77,6 +77,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 		IDToken      string
 		Username     string
 		RefreshToken string
+		Production   bool
 	}{
 		ClusterName:  clusterName,
 		APIServerURL: apiServerURL,
@@ -86,6 +87,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 		Username:     claims.PreferredName,
 		IDToken:      idToken,
 		RefreshToken: refreshToken,
+		Production:   os.Getenv("GO_ENV") == "production",
 	}
 
 	var buf bytes.Buffer

@@ -449,7 +449,7 @@
 
       <!-- Cluster Information Cards -->
       <div class="cluster-info">
-        <div class="info-card fade-in">
+          <div class="info-card fade-in">
           <md-elevation></md-elevation>
           <h3>
             <md-icon>dns</md-icon>
@@ -457,7 +457,7 @@
           </h3>
           <p><strong>Name:</strong> <span class="value">{{.ClusterName}}</span></p>
           <p><strong>Server:</strong> <span class="value">{{.APIServerURL}}</span></p>
-          <p><strong>Proxy:</strong> <span class="value">socks5://localhost:10231</span></p>
+          <p><strong>Proxy:</strong> <span class="value">{{if .Production}}none{{else}}socks5://localhost:10231{{end}}</span></p>
         </div>
         
         <div class="info-card fade-in" style="animation-delay: 0.1s;">
@@ -482,6 +482,7 @@
           </h2>
           
           <div class="instruction-steps">
+            {{ if not .Production }}
             <div class="step">
               <div class="step-number">1</div>
               <div class="step-content">
@@ -519,18 +520,45 @@
                       <md-icon>content_copy</md-icon>
                     </md-icon-button>
                   </div>
-                  <pre class="code-text" id="kubectl-command">kubectl --kubeconfig={{.ClusterName}}-kubeconfig.yaml get pods</pre>
+                  <pre class="code-text" id="kubectl-command">kubectl --kubeconfig={{.ClusterName}}-kubeconfig.yaml auth whoami</pre>
                 </div>
                 <p class="step-note">Replace the filename with your actual kubeconfig file path.</p>
               </div>
             </div>
+            {{ else }}
+            <div class="step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h3>Create Kubeconfig File</h3>
+                <p>Save the Kubernetes configuration below to a file (e.g., <code>{{.ClusterName}}-kubeconfig.yaml</code>):</p>
+                <p class="step-note">You can use the Copy or Download buttons in the configuration section.</p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h3>Use with kubectl</h3>
+                <p>Use the configuration with kubectl. We recommend using the <code>--kubeconfig</code> flag:</p>
+                <div class="code-block">
+                  <div class="code-actions">
+                    <md-icon-button onclick="copyKubectlCommand()">
+                      <md-icon>content_copy</md-icon>
+                    </md-icon-button>
+                  </div>
+                  <pre class="code-text" id="kubectl-command">kubectl --kubeconfig={{.ClusterName}}-kubeconfig.yaml auth whoami</pre>
+                </div>
+                <p class="step-note">Replace the filename with your actual kubeconfig file path.</p>
+              </div>
+            </div>
+            {{ end }}
           </div>
         </div>
       </div>
 
       <!-- Configuration Section -->
       <div class="config-content fade-in" style="animation-delay: 0.2s;">
-        <div class="config-actions">
+          <div class="config-actions">
           <md-outlined-button class="copy-button" onclick="copyConfig()">
             <md-icon slot="icon">content_copy</md-icon>
             Copy
@@ -545,8 +573,8 @@
 kind: Config
 clusters:
 - cluster:
-    server: {{.APIServerURL}}
-    proxy-url: socks5://localhost:10231
+    server: {{.APIServerURL}}{{if not .Production}}
+    proxy-url: socks5://localhost:10231{{end}}
   name: {{.ClusterName}}-cluster
 users:
 - name: {{.Username}}-{{.ClusterName}}-cluster
