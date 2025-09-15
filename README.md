@@ -14,9 +14,9 @@ Here's a quick look at the apps in this monorepo:
 
 | App | What it does | Tech | URL |
 |---|---|---|---|
-| `ishiori-landing-page` | Alanding page for my Homelab Network. | Go and Simple HTML | https://hello.ishiori.net |
+| `ishiori-landing-page` | A landing page for my Homelab Network. | Go and Simple HTML | https://hello.ishiori.net |
 | `k8s-dex-client` | Auth client for the cluster, using Dex for identity. | Go, Simple HTML, and OAuth2 via DexIDP | https://login.hana.ishiori.net |
-| `k8s-landing-page` | The main hub for users after they log in. | Go and Simple HTML | https://hello.hana.ishiori.net |
+| `k8s-landing-page` | Simple landing page for cluster. | Go and Simple HTML | https://hello.hana.ishiori.net |
 
 ## Tech Stack
 
