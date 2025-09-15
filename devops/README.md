@@ -1,27 +1,51 @@
-# DevOps Operations
+# DevOps for Hanamizuki
 
-## Current State: Manual Execution
+This folder holds the scripts for building, testing, and deploying the apps in the Hanamizuki cluster. It's a practical take on DevOps for a personal project, with an eye toward a more automated future.
 
-This DevOps folder contains scripts and configurations that are **currently meant to be executed manually**. 
+## Rake for Automation
 
-As this is a one-person project at the moment, the overhead of setting up automated CI/CD pipelines is not justified. Manual execution allows for:
-- Quick iteration and testing
-- Direct control over deployment timing
-- Simplified debugging and troubleshooting
-- Reduced infrastructure complexity
+I'm using **Rake**, a Ruby-based build tool, to automate common tasks. It's a great example of picking the right tool for the job, even if it's not the most common choice for a Go project.
 
-## Future Roadmap: Automated CI/CD
+### Available Tasks
 
-**When the project grows larger** and involves multiple team members, these operations should be integrated into an automated CI/CD pipeline. This will provide:
-- Consistent and reliable deployments
-- Reduced human error
-- Better collaboration workflows
-- Automated testing and validation
-- Deployment history and rollback capabilities
+The Rake tasks are organized in a consistent and predictable way, following the pattern `<app_name>:<environment>_<action>`. This structure makes it easy to manage the different applications and their development and testing lifecycles.
 
-## Usage
+There are three main applications:
+- `ishiori_landing_page`
+- `k8s_dex_client`
+- `k8s_landing_page`
 
-For now, execute the scripts in this folder manually as needed. Ensure you understand what each script does before running it in production environments.
+For each of these applications, there are two primary sets of tasks for different environments:
 
----
-*Last updated: August 2025*
+#### Development Environment (`dev`)
+These tasks are for managing the local development environment.
+- **`dev_up`**: Starts the application's development environment.
+- **`dev_down`**: Stops the development environment.
+- **`dev_restart`**: Rebuilds and restarts the development environment, which is useful after making code changes.
+
+#### Production Test Environment (`prod_test`)
+These tasks are for a simulated production environment to test the application before deployment.
+- **`prod_test_up`**: Starts the production test environment.
+- **`prod_test_down`**: Stops the production test environment.
+- **`prod_test_cycle`**: Runs a full cycle of building, starting, testing, and stopping the application.
+- **`prod_test_health`**: Checks the health of the running application in the test environment.
+- **`prod_test_logs`**: Displays the logs from the application in the test environment.
+
+## Current State: Manual Automation
+
+Right now, I run these scripts by hand. It's a good fit for a solo project—it's flexible, gives me full control, and avoids the overhead of a full CI/CD pipeline.
+
+## The Future: Full CI/CD
+
+While the manual approach works for now, I've designed the automation to be ready for a full CI/CD pipeline. The Rake tasks are modular and can be easily plugged into tools like Jenkins, GitLab CI, or GitHub Actions when the time comes.
+
+## How to Use
+
+You'll need Ruby and Bundler to run these scripts.
+
+```bash
+bundle install
+bundle exec rake -T
+```
+
+This will list all the available Rake tasks.
