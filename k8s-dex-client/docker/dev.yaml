@@ -20,7 +20,7 @@ services:
       - PORT=5555
       - GO_ENV=development
       - CLIENT_ID=dex-k8s-client
-      - OIDC_ISSUER=https://dex.mizuki.otaprv.ishiori.net/dex
+      - OIDC_ISSUER=https://dex.mizuki.otaprv.ishiori.net
       - CLIENT_CLUSTER_NAME=mizuki
       - CALLBACK_URL=http://localhost:5555/apis/auth/callback
       - APISERVER_URL=https://apiserver.mizuki.otaprv.ishiori.net
