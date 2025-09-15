@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  k8s-landing-page:
+    build:
+      context: ..
+      dockerfile: docker/dev.Dockerfile
+    ports:
+      - "2434:2434"
+    volumes:
+      # Mount the entire project directory for hot reloading
+      - ..:/app
+      # Use a named volume for the Go module cache to improve performance
+      - go-mod-cache:/go/pkg/mod
+      # Exclude tmp directory from being overwritten by host
+      - /app/tmp
+    environment:
+      - PORT=2434
+      - GO_ENV=development
+    # Keep container running even if the main process exits
+    stdin_open: true
+    tty: true
+    # Restart policy for development
+    restart: unless-stopped
+
+volumes:
+  go-mod-cache:
