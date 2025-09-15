@@ -6,6 +6,8 @@ This repo holds the custom apps for my personal Kubernetes cluster, "Hanamizuki.
 
 The Hanamizuki cluster is where I experiment with cloud-native tech. These apps provide key services like authentication and UIs.
 
+For cluster general info and its manifests, see https://github.com/reverseon/hanamizuki-k8s-cluster
+
 ## The Apps
 
 Here's a quick look at the apps in this monorepo:
